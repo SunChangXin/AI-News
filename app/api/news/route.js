@@ -68,6 +68,36 @@ function parseRss(xml, source) {
   }).filter((item) => item.title && item.url);
 }
 
+const containsChinese = (text = "") => /[\u3400-\u9fff]/.test(text);
+
+async function toChineseSummary(item) {
+  if (containsChinese(item.summary)) return item;
+
+  try {
+    const endpoint = new URL("https://translate.googleapis.com/translate_a/single");
+    endpoint.searchParams.set("client", "gtx");
+    endpoint.searchParams.set("sl", "auto");
+    endpoint.searchParams.set("tl", "zh-CN");
+    endpoint.searchParams.set("dt", "t");
+    endpoint.searchParams.set("q", item.summary);
+
+    const response = await fetch(endpoint, {
+      cache: "no-store",
+      signal: AbortSignal.timeout(5000),
+    });
+    if (!response.ok) throw new Error("translation unavailable");
+
+    const data = await response.json();
+    const translated = data?.[0]?.map((part) => part?.[0] || "").join("").trim();
+    if (translated) return { ...item, summary: translated };
+  } catch {}
+
+  return {
+    ...item,
+    summary: `这篇资讯介绍了 ${item.title} 的最新进展，涉及相关产品、研究或公司动态。点击原文可查看完整信息。`,
+  };
+}
+
 async function loadSource(source) {
   for (const url of source.urls) {
     try {
@@ -86,7 +116,8 @@ async function loadSource(source) {
 
 export async function GET() {
   const results = await Promise.all(sources.map(loadSource));
-  const items = results.flat().sort((a, b) => new Date(b.date) - new Date(a.date));
+  const sorted = results.flat().sort((a, b) => new Date(b.date) - new Date(a.date));
+  const items = await Promise.all(sorted.map(toChineseSummary));
   return NextResponse.json(
     { items, updatedAt: new Date().toISOString() },
     { headers: { "Cache-Control": "public, s-maxage=21600, stale-while-revalidate=86400" } },
