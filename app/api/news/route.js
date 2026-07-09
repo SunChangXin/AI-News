@@ -7,25 +7,49 @@ const sources = [
   {
     company: "openai",
     name: "OpenAI",
-    urls: ["https://openai.com/news/rss.xml", "https://news.google.com/rss/search?q=site%3Aopenai.com%2Findex&hl=zh-CN&gl=CN&ceid=CN%3Azh-Hans"],
+    urls: [
+      "https://openai.com/news/rss.xml",
+      googleNews("OpenAI OR ChatGPT OR GPT-5 OR GPT-5.6 OR GPT-5.6 Sol OR Sora"),
+      googleNews("OpenAI product launch OR OpenAI model release OR ChatGPT update"),
+      googleNews("site:openai.com/news OR site:help.openai.com OpenAI"),
+    ],
   },
   {
     company: "anthropic",
     name: "Anthropic",
-    urls: ["https://www.anthropic.com/news/rss.xml", "https://news.google.com/rss/search?q=site%3Aanthropic.com%2Fnews+Anthropic&hl=en-US&gl=US&ceid=US%3Aen"],
+    urls: [
+      "https://www.anthropic.com/news/rss.xml",
+      googleNews("Anthropic OR Claude AI OR Claude Code OR Claude model release"),
+      googleNews("site:anthropic.com/news OR site:support.anthropic.com Claude Anthropic"),
+      googleNews("Claude update OR Claude new model OR Anthropic product launch"),
+    ],
   },
   {
     company: "zhipu",
     name: "智谱 AI",
-    urls: ["https://news.google.com/rss/search?q=site%3Azhipuai.cn+OR+site%3Az.ai%2Fblog&hl=zh-CN&gl=CN&ceid=CN%3Azh-Hans"],
+    urls: [
+      googleNews("智谱 AI OR 智谱清言 OR GLM OR Z.ai"),
+      googleNews("site:zhipuai.cn OR site:z.ai 智谱 OR GLM"),
+      googleNews("智谱 模型 发布 OR 智谱 产品 更新 OR GLM 新模型"),
+    ],
   },
 ];
+
+function googleNews(query, locale = "zh-CN", region = "CN") {
+  const url = new URL("https://news.google.com/rss/search");
+  url.searchParams.set("q", query);
+  url.searchParams.set("hl", locale);
+  url.searchParams.set("gl", region);
+  url.searchParams.set("ceid", `${region}:zh-Hans`);
+  return url.toString();
+}
 
 const decode = (value = "") => value
   .replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, "$1")
   .replace(/<[^>]+>/g, " ")
   .replace(/&amp;/g, "&")
   .replace(/&quot;/g, "\"")
+  .replace(/&nbsp;/g, " ")
   .replace(/&#39;|&apos;/g, "'")
   .replace(/&lt;/g, "<")
   .replace(/&gt;/g, ">")
@@ -51,7 +75,7 @@ const makeSummary = (description, title) => {
 
 function parseRss(xml, source) {
   const blocks = xml.match(/<item[\s\S]*?<\/item>/gi) || [];
-  return blocks.slice(0, 8).map((block, index) => {
+  return blocks.slice(0, 12).map((block, index) => {
     const title = cleanTitle(field(block, "title"), source.name);
     const link = field(block, "link");
     const guid = field(block, "guid");
@@ -62,10 +86,30 @@ function parseRss(xml, source) {
       title,
       summary: makeSummary(description, title),
       date: field(block, "pubDate") || field(block, "dc:date") || new Date().toISOString(),
-      category: field(block, "category") || "官方动态",
-      url: link || guid,
+      category: inferCategory(link || guid, field(block, "category")),
+      url: normalizeGoogleNewsUrl(link || guid),
     };
   }).filter((item) => item.title && item.url);
+}
+
+function inferCategory(url = "", category = "") {
+  if (category) return category;
+  if (/news\.google\.com/i.test(url)) return "媒体报道";
+  return "官方动态";
+}
+
+function normalizeGoogleNewsUrl(url = "") {
+  return url.replace(/^https?:\/\/news\.google\.com\/rss\/articles\//, "https://news.google.com/articles/");
+}
+
+function uniqueItems(items) {
+  const seen = new Set();
+  return items.filter((item) => {
+    const key = `${item.company}:${item.url || item.title}`.toLocaleLowerCase();
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
 }
 
 const containsChinese = (text = "") => /[\u3400-\u9fff]/.test(text);
@@ -99,24 +143,30 @@ async function toChineseSummary(item) {
 }
 
 async function loadSource(source) {
-  for (const url of source.urls) {
+  const batches = await Promise.all(source.urls.map(async (url) => {
     try {
       const response = await fetch(url, {
         headers: { "User-Agent": "AI-Newsroom/1.0 (+https://vercel.app)" },
         cache: "no-store",
         signal: AbortSignal.timeout(8000),
       });
-      if (!response.ok) continue;
-      const items = parseRss(await response.text(), source);
-      if (items.length) return items;
-    } catch {}
-  }
-  return [];
+      if (!response.ok) return [];
+      return parseRss(await response.text(), source);
+    } catch {
+      return [];
+    }
+  }));
+
+  return uniqueItems(batches.flat())
+    .sort((a, b) => new Date(b.date) - new Date(a.date))
+    .slice(0, 18);
 }
 
 export async function GET() {
   const results = await Promise.all(sources.map(loadSource));
-  const sorted = results.flat().sort((a, b) => new Date(b.date) - new Date(a.date));
+  const sorted = uniqueItems(results.flat())
+    .sort((a, b) => new Date(b.date) - new Date(a.date))
+    .slice(0, 54);
   const items = await Promise.all(sorted.map(toChineseSummary));
   return NextResponse.json(
     { items, updatedAt: new Date().toISOString() },
