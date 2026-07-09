@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="AI 资讯">
+  <rect width="512" height="512" rx="56" fill="#111111"/>
+  <path
+    d="M58 255H155L207 132C218 106 255 106 266 132L334 316L374 255H421"
+    fill="none"
+    stroke="#ffffff"
+    stroke-width="42"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+  <circle cx="456" cy="255" r="30" fill="#ff4b26"/>
+</svg>
