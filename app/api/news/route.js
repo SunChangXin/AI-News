@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { decodeRssText } from "../../../lib/rss";
 
 export const revalidate = 21600;
 export const dynamic = "force-dynamic";
@@ -118,22 +119,9 @@ function googleNews(query, locale = "zh-CN", region = "CN") {
   return url.toString();
 }
 
-const decode = (value = "") => value
-  .replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, "$1")
-  .replace(/<[^>]+>/g, " ")
-  .replace(/&amp;/g, "&")
-  .replace(/&quot;/g, "\"")
-  .replace(/&nbsp;/g, " ")
-  .replace(/&#39;|&apos;/g, "'")
-  .replace(/&lt;/g, "<")
-  .replace(/&gt;/g, ">")
-  .replace(/&#(\d+);/g, (_, code) => String.fromCharCode(Number(code)))
-  .replace(/\s+/g, " ")
-  .trim();
-
 const field = (xml, tag) => {
   const match = xml.match(new RegExp(`<${tag}(?:\\s[^>]*)?>([\\s\\S]*?)<\\/${tag}>`, "i"));
-  return decode(match?.[1] || "");
+  return decodeRssText(match?.[1] || "");
 };
 
 const cleanTitle = (title, sourceName) => title
