@@ -205,6 +205,22 @@ footer p { margin: 0; }
 .section-placeholder > p:not(.portal-kicker) { max-width: 480px; margin: 25px 0 0; color: var(--muted); font-size: 17px; line-height: 1.7; }
 .section-placeholder a { display: inline-flex; align-items: center; gap: 7px; margin-top: 32px; color: var(--ink); font-size: 14px; font-weight: 750; text-decoration: none; }
 .section-placeholder a:hover { color: var(--accent); }
+.section-newsroom .portal-kicker { color: var(--section-accent); }
+.section-news-hero { max-width: 720px; padding: 84px 0 50px; border-bottom: 1px solid var(--line); }
+.section-news-hero h1 { margin: 0; color: var(--ink); font-size: clamp(48px, 6vw, 82px); line-height: .98; letter-spacing: -.07em; }
+.section-news-hero > p:last-child { max-width: 510px; margin: 24px 0 0; color: var(--muted); font-size: 17px; line-height: 1.7; }
+.section-search { margin: 29px 0 46px; }
+.section-feed { max-width: 960px; padding-bottom: 88px; }
+.section-story { padding: 34px 0 38px; border-bottom: 1px solid var(--line); }
+.section-story > div { display: flex; flex-wrap: wrap; gap: 14px; color: var(--muted); font: 600 10px/1.4 Consolas, monospace; letter-spacing: .06em; text-transform: uppercase; }
+.section-story > div span { color: var(--section-accent); }
+.section-story > div small { font: inherit; }
+.section-story h2 { max-width: 760px; margin: 14px 0 11px; font-size: clamp(25px, 3vw, 37px); line-height: 1.15; letter-spacing: -.045em; }
+.section-story p { max-width: 710px; margin: 0; color: var(--muted); line-height: 1.75; }
+.section-story a { display: inline-flex; align-items: center; gap: 6px; margin-top: 18px; color: var(--ink); font-size: 13px; font-weight: 750; text-decoration: none; }
+.section-story a:hover { color: var(--section-accent); }
+.section-state { display: flex; align-items: center; gap: 12px; padding: 48px 0; color: var(--muted); border-bottom: 1px solid var(--line); }
+.section-state svg { color: var(--section-accent); }
 
 @media (max-width: 900px) {
   .portal-shell { width: min(100% - 32px, 1420px); }
@@ -228,4 +244,9 @@ footer p { margin: 0; }
   .portal-section-heading { align-items: flex-end; }
   .portal-ai-section, .portal-sections { padding-bottom: 56px; }
   .section-placeholder { padding: 96px 0; }
+  .section-news-hero { padding: 58px 0 40px; }
+  .section-news-hero h1 { font-size: clamp(43px, 14vw, 62px); }
+  .section-news-hero > p:last-child { font-size: 15px; }
+  .section-feed { padding-bottom: 56px; }
+  .section-story { padding: 28px 0 31px; }
 }
