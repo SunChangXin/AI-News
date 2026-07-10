@@ -33,6 +33,80 @@ const sources = [
       googleNews("智谱 模型 发布 OR 智谱 产品 更新 OR GLM 新模型"),
     ],
   },
+  {
+    company: "deepmind",
+    name: "Google DeepMind",
+    urls: [
+      "https://deepmind.google/discover/blog/rss.xml",
+      googleNews("Google DeepMind OR Gemini OR Gemma OR Veo model update"),
+      googleNews("site:deepmind.google Gemini OR Gemma OR Veo"),
+    ],
+  },
+  {
+    company: "meta",
+    name: "Meta AI",
+    urls: [
+      "https://ai.meta.com/blog/rss/",
+      googleNews("Meta AI OR Llama OR Meta Superintelligence Labs"),
+      googleNews("site:ai.meta.com/blog Llama OR Meta AI"),
+    ],
+  },
+  {
+    company: "xai",
+    name: "xAI",
+    urls: [
+      googleNews("xAI OR Grok model OR Grok API"),
+      googleNews("site:x.ai/news Grok OR xAI"),
+    ],
+  },
+  {
+    company: "mistral",
+    name: "Mistral AI",
+    urls: [
+      googleNews("Mistral AI OR Le Chat OR Mistral model"),
+      googleNews("site:mistral.ai/news Mistral"),
+    ],
+  },
+  {
+    company: "deepseek",
+    name: "DeepSeek",
+    urls: [
+      googleNews("DeepSeek OR DeepSeek R1 OR DeepSeek V3"),
+      googleNews("site:deepseek.com DeepSeek OR site:github.com/deepseek-ai"),
+    ],
+  },
+  {
+    company: "qwen",
+    name: "通义千问",
+    urls: [
+      googleNews("通义千问 OR Qwen OR 阿里云 AI"),
+      googleNews("site:qwenlm.github.io OR site:aliyun.com Qwen OR 通义千问"),
+    ],
+  },
+  {
+    company: "baidu",
+    name: "百度文心",
+    urls: [
+      googleNews("百度 文心 OR ERNIE OR 飞桨 AI"),
+      googleNews("site:baidu.com 文心 OR ERNIE 模型"),
+    ],
+  },
+  {
+    company: "tencent",
+    name: "腾讯混元",
+    urls: [
+      googleNews("腾讯 混元 OR Hunyuan OR 腾讯元宝 AI"),
+      googleNews("site:tencent.com 混元 OR Hunyuan 模型"),
+    ],
+  },
+  {
+    company: "kimi",
+    name: "Kimi",
+    urls: [
+      googleNews("月之暗面 OR Kimi AI OR Kimi 模型"),
+      googleNews("site:moonshot.cn Kimi OR 月之暗面"),
+    ],
+  },
 ];
 
 function googleNews(query, locale = "zh-CN", region = "CN") {
@@ -159,14 +233,14 @@ async function loadSource(source) {
 
   return uniqueItems(batches.flat())
     .sort((a, b) => new Date(b.date) - new Date(a.date))
-    .slice(0, 18);
+    .slice(0, 6);
 }
 
 export async function GET() {
   const results = await Promise.all(sources.map(loadSource));
   const sorted = uniqueItems(results.flat())
     .sort((a, b) => new Date(b.date) - new Date(a.date))
-    .slice(0, 54);
+    .slice(0, 72);
   const items = await Promise.all(sorted.map(toChineseSummary));
   return NextResponse.json(
     { items, updatedAt: new Date().toISOString() },

@@ -16,12 +16,30 @@ const companies = [
   { id: "openai", name: "OpenAI" },
   { id: "anthropic", name: "Anthropic" },
   { id: "zhipu", name: "智谱 AI" },
+  { id: "deepmind", name: "Google DeepMind" },
+  { id: "meta", name: "Meta AI" },
+  { id: "xai", name: "xAI" },
+  { id: "mistral", name: "Mistral AI" },
+  { id: "deepseek", name: "DeepSeek" },
+  { id: "qwen", name: "通义千问" },
+  { id: "baidu", name: "百度文心" },
+  { id: "tencent", name: "腾讯混元" },
+  { id: "kimi", name: "Kimi" },
 ];
 
 const companyMeta = {
   openai: { name: "OpenAI", mark: "OAI", color: "#111111" },
   anthropic: { name: "Anthropic", mark: "A", color: "#d97757" },
   zhipu: { name: "智谱 AI", mark: "Z", color: "#3056d3" },
+  deepmind: { name: "Google DeepMind", mark: "G", color: "#4285f4" },
+  meta: { name: "Meta AI", mark: "M", color: "#0866ff" },
+  xai: { name: "xAI", mark: "X", color: "#111111" },
+  mistral: { name: "Mistral AI", mark: "Mi", color: "#ff7000" },
+  deepseek: { name: "DeepSeek", mark: "DS", color: "#4b6bfb" },
+  qwen: { name: "通义千问", mark: "Q", color: "#6b57e8" },
+  baidu: { name: "百度文心", mark: "B", color: "#2932e1" },
+  tencent: { name: "腾讯混元", mark: "H", color: "#00a4ff" },
+  kimi: { name: "Kimi", mark: "K", color: "#28a5a5" },
 };
 
 const formatDate = (value) => {
@@ -127,7 +145,7 @@ export default function Newsroom() {
           <p>自动追踪头部 AI 公司的产品发布、研究进展与企业动态，直达每一条官方原文。</p>
         </div>
         <div className="hero-index" aria-label="监测概况">
-          <div><strong>3</strong><span>重点公司</span></div>
+          <div><strong>12</strong><span>重点公司</span></div>
           <div><strong>6h</strong><span>自动刷新</span></div>
           <div><strong>24/7</strong><span>持续监测</span></div>
         </div>
