@@ -7,9 +7,9 @@ import {
   Clock,
   MagnifyingGlass,
   NewspaperClipping,
-  Pulse,
   WarningCircle,
 } from "@phosphor-icons/react";
+import SiteNav from "./SiteNav";
 
 const companies = [
   { id: "all", name: "全部动态" },
@@ -97,7 +97,6 @@ export default function Newsroom() {
   const [query, setQuery] = useState("");
   const [news, setNews] = useState([]);
   const [status, setStatus] = useState("loading");
-  const [updatedAt, setUpdatedAt] = useState(null);
 
   useEffect(() => {
     let live = true;
@@ -109,7 +108,6 @@ export default function Newsroom() {
       .then((data) => {
         if (!live) return;
         setNews(data.items || []);
-        setUpdatedAt(data.updatedAt);
         setStatus(data.items?.length ? "ready" : "empty");
       })
       .catch(() => live && setStatus("error"));
@@ -127,17 +125,7 @@ export default function Newsroom() {
 
   return (
     <main>
-      <header className="site-header">
-        <a className="brand" href="#top" aria-label="AI 前线首页">
-          <span className="brand-mark"><Pulse size={20} weight="bold" /></span>
-          <span>AI 前线</span>
-        </a>
-        <div className="header-status">
-          <span className="live-dot" />
-          {updatedAt ? `更新于 ${new Date(updatedAt).toLocaleTimeString("zh-CN", { hour: "2-digit", minute: "2-digit" })}` : "正在同步全球动态"}
-        </div>
-      </header>
-
+      <SiteNav current="/ai" />
       <section className="hero" id="top">
         <div className="hero-copy">
           <div className="eyebrow"><NewspaperClipping size={16} /> AI COMPANY INTELLIGENCE</div>

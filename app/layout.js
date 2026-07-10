@@ -1,8 +1,8 @@
 import "./globals.css";
 
 export const metadata = {
-  title: "AI 前线 | 全球 AI 公司动态",
-  description: "自动聚合 OpenAI、Anthropic、智谱等头部 AI 公司的最新官方动态与媒体报道。",
+  title: "资讯前线 | 全球资讯与 AI 动态",
+  description: "聚合 AI、世界、社会、科普与英语学习资讯，直达可靠原始来源。",
   icons: {
     icon: "/ai-news-icon.svg",
     shortcut: "/ai-news-icon.svg",
