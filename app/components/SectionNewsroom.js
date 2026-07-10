@@ -6,6 +6,9 @@ import SiteNav from "./SiteNav";
 
 const sectionMeta = {
   world: { label: "世界见闻", description: "追踪国际组织、外交与全球公共议题。", accent: "#315b8e" },
+  china: { label: "社会时事", description: "关注民生、教育、医疗与公共事件。", accent: "#d85a35" },
+  party: { label: "党建", description: "汇集党建公开信息、政策文件与理论学习动态。", accent: "#bd2735" },
+  horror: { label: "恐怖怪谈", description: "收录社区故事与怪谈内容，已标注可能的不适信息。", accent: "#5d466c" },
   science: { label: "科普探索", description: "从太空任务到最新论文，读懂科学进展。", accent: "#177c71" },
   english: { label: "英语口语", description: "用真实演讲和表达素材练习英语听说。", accent: "#2874a8" },
 };
@@ -58,6 +61,7 @@ export default function SectionNewsroom({ section }) {
             <div><span>{item.sourceName}</span><time>{formatDate(item.publishedAt)}</time><small>{item.sourceType}</small></div>
             <h2>{item.title}</h2>
             <p>{item.summaryZh}</p>
+            {item.warning && <small className="section-warning">提示：{item.warning}</small>}
             <a href={item.originalUrl} target="_blank" rel="noreferrer">阅读原文 <ArrowRight size={16} /></a>
           </article>
         ))}

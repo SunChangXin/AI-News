@@ -2,9 +2,6 @@ import Link from "next/link";
 import SiteNav from "./SiteNav";
 
 const content = {
-  china: ["社会时事", "正在建立面向民生、教育、医疗与公共事件的资讯来源。"],
-  party: ["党建", "正在整理政策文件、会议与理论学习的可靠公开来源。"],
-  horror: ["恐怖怪谈", "该栏目会在上线前完成内容分级、真实性标注与不适内容提示。"],
 };
 
 export default function SectionPlaceholder({ section }) {

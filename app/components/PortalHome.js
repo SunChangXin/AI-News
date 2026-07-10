@@ -7,9 +7,9 @@ import SiteNav from "./SiteNav";
 
 const sections = [
   { href: "/world", label: "世界见闻", description: "国际组织、外交与全球热点", accent: "#315b8e", live: true },
-  { href: "/china", label: "社会时事", description: "民生、教育、医疗与公共事件", accent: "#d85a35" },
-  { href: "/party", label: "党建", description: "政策文件、会议与理论学习", accent: "#bd2735" },
-  { href: "/horror", label: "恐怖怪谈", description: "故事、传闻与社区热帖，含内容标注", accent: "#5d466c" },
+  { href: "/china", label: "社会时事", description: "民生、教育、医疗与公共事件", accent: "#d85a35", live: true },
+  { href: "/party", label: "党建", description: "政策文件、会议与理论学习", accent: "#bd2735", live: true },
+  { href: "/horror", label: "恐怖怪谈", description: "故事、传闻与社区热帖，含内容标注", accent: "#5d466c", live: true },
   { href: "/science", label: "科普探索", description: "天文、生命、地球与论文速读", accent: "#177c71", live: true },
   { href: "/english", label: "英语口语", description: "TED、表达训练与实用听说素材", accent: "#2874a8", live: true },
 ];

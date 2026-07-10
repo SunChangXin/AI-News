@@ -11,6 +11,6 @@ export function generateStaticParams() {
 export default async function SectionPage({ params }) {
   const { section } = await params;
   if (!sections.has(section)) notFound();
-  if (["world", "science", "english"].includes(section)) return <SectionNewsroom section={section} />;
+  if (["world", "china", "party", "horror", "science", "english"].includes(section)) return <SectionNewsroom section={section} />;
   return <SectionPlaceholder section={section} />;
 }

@@ -4,6 +4,27 @@ export const revalidate = 21600;
 export const dynamic = "force-dynamic";
 
 const sectionSources = {
+  china: {
+    label: "社会时事",
+    sources: [
+      { name: "国内资讯", type: "媒体报道", url: googleNewsChinese("中国 社会 民生 教育 医疗 公共事件") },
+      { name: "政府公开信息", type: "公开发布", url: googleNewsChinese("site:gov.cn 民生 OR 教育 OR 医疗") },
+    ],
+  },
+  party: {
+    label: "党建",
+    sources: [
+      { name: "党建资讯", type: "公开发布", url: googleNewsChinese("党建 OR 党史学习 OR 中央党校 OR 组织建设") },
+      { name: "政府公开信息", type: "公开发布", url: googleNewsChinese("site:gov.cn 党建 OR 党的建设") },
+    ],
+  },
+  horror: {
+    label: "恐怖怪谈",
+    sources: [
+      { name: "r/nosleep", type: "社区故事", url: "https://www.reddit.com/r/nosleep/.rss", warning: "虚构故事与用户经历并存，请自行判断真实性。" },
+      { name: "怪谈社区", type: "社区故事", url: googleNews("site:reddit.com/r/nosleep OR site:reddit.com/r/LetsNotMeet horror story"), warning: "内容可能包含惊悚、暴力或不适描述。" },
+    ],
+  },
   world: {
     label: "世界见闻",
     sources: [
@@ -37,6 +58,15 @@ function googleNews(query, locale = "en-US", region = "US") {
   return url.toString();
 }
 
+function googleNewsChinese(query) {
+  const url = new URL("https://news.google.com/rss/search");
+  url.searchParams.set("q", query);
+  url.searchParams.set("hl", "zh-CN");
+  url.searchParams.set("gl", "CN");
+  url.searchParams.set("ceid", "CN:zh-Hans");
+  return url.toString();
+}
+
 const decode = (value = "") => value
   .replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, "$1")
   .replace(/<[^>]+>/g, " ")
@@ -59,12 +89,13 @@ const normalizeUrl = (url = "") => url.replace(/^https?:\/\/news\.google\.com\/r
 const containsChinese = (text = "") => /[\u3400-\u9fff]/.test(text);
 
 function parseRss(xml, section, source) {
-  const blocks = xml.match(/<item[\s\S]*?<\/item>/gi) || [];
+  const blocks = xml.match(/<(?:item|entry)[\s\S]*?<\/(?:item|entry)>/gi) || [];
   return blocks.slice(0, 12).map((block, index) => {
     const title = field(block, "title").replace(/\s*[-|]\s*(TED Talks Daily|NASA|United Nations).*$/i, "").trim();
-    const originalUrl = normalizeUrl(field(block, "link") || field(block, "guid"));
+    const atomLink = block.match(/<link[^>]+href=["']([^"']+)["'][^>]*>/i)?.[1] || "";
+    const originalUrl = normalizeUrl(atomLink || field(block, "link") || field(block, "guid"));
     const originalTitle = title;
-    const summaryZh = (field(block, "description") || field(block, "content:encoded")).slice(0, 320);
+    const summaryZh = (field(block, "description") || field(block, "content:encoded") || field(block, "summary") || field(block, "content")).slice(0, 320);
     return {
       id: `${section}-${source.name}-${field(block, "guid") || originalUrl || index}`,
       section,
@@ -78,6 +109,7 @@ function parseRss(xml, section, source) {
       publishedAt: field(block, "pubDate") || field(block, "dc:date") || new Date().toISOString(),
       fetchedAt: new Date().toISOString(),
       tags: [],
+      warning: source.warning,
     };
   }).filter((item) => item.title && item.originalUrl);
 }
