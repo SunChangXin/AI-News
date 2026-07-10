@@ -130,7 +130,7 @@ const cleanTitle = (title, sourceName) => title
   .trim();
 
 const makeSummary = (description, title) => {
-  const clean = decode(description).replace(/^.*?\s[-–]\s/, "");
+  const clean = decodeRssText(description).replace(/^.*?\s[-–]\s/, "");
   if (clean && clean.toLocaleLowerCase() !== title.toLocaleLowerCase()) return clean.slice(0, 180);
   return `了解这项来自官方的最新发布，涵盖相关产品、研究进展与后续影响。点击进入原文查看完整信息。`;
 };

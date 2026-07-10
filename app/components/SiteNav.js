@@ -14,7 +14,7 @@ export default function SiteNav({ current = "" }) {
   return (
     <header className="portal-header">
       <Link className="portal-brand" href="/" aria-label="资讯前线首页">
-        <span className="portal-brand-mark"><img src="/ai-news-icon.svg" alt="" /></span>
+        <span className="portal-brand-mark"><img src="/news-portal-icon.png" alt="" /></span>
         <span>资讯前线</span>
       </Link>
       <nav className="portal-nav" aria-label="资讯分区">

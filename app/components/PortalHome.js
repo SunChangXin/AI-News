@@ -26,7 +26,7 @@ export default function PortalHome() {
           <a className="portal-primary-link" href="#sections">浏览全部分区 <ArrowRight size={17} weight="bold" /></a>
         </div>
         <div className="portal-hero-visual" aria-hidden="true">
-          <img src="/ai-news-icon.svg" alt="" />
+          <img src="/news-portal-icon.png" alt="" />
         </div>
       </section>
 
