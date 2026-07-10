@@ -25,6 +25,7 @@ const sectionSources = {
       { name: "r/nosleep", type: "社区故事", subcategory: "长篇故事", url: "https://www.reddit.com/r/nosleep/.rss", warning: "虚构故事与用户经历并存，请自行判断真实性。" },
       { name: "r/LetsNotMeet", type: "社区故事", subcategory: "长篇故事", url: "https://www.reddit.com/r/LetsNotMeet/.rss", warning: "内容可能包含惊悚、暴力或不适描述。" },
       { name: "r/shortscarystories", type: "社区故事", subcategory: "短篇故事", url: "https://www.reddit.com/r/shortscarystories/.rss", warning: "内容可能包含惊悚或不适描述。" },
+      { name: "短篇怪谈社区", type: "社区故事", subcategory: "短篇故事", url: googleNews("site:reddit.com/r/shortscarystories short horror story"), warning: "内容可能包含惊悚或不适描述。" },
     ],
   },
   world: {
