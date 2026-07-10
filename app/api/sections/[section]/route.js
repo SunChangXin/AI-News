@@ -52,9 +52,9 @@ const sectionSources = {
     ],
   },
   english: {
-    label: "英语口语",
+    label: "英语",
     sources: [
-      { name: "TED Talks", type: "英语学习", subcategory: "听力", url: "https://feeds.feedburner.com/tedtalks_video" },
+      { name: "TED Talks", type: "英语学习视频", subcategory: "听力", url: "https://feeds.feedburner.com/tedtalks_video" },
       { name: "英语听力", type: "学习素材", subcategory: "听力", url: googleNews("English listening practice OR listening comprehension lesson") },
       { name: "英语口语", type: "学习素材", subcategory: "口语", url: googleNews("English speaking practice OR pronunciation lesson") },
       { name: "英语阅读", type: "学习素材", subcategory: "阅读", url: googleNews("English reading practice OR reading comprehension lesson") },
@@ -107,6 +107,7 @@ function parseRss(xml, section, source) {
       summaryZh,
       sourceName: source.name,
       sourceType: source.type,
+      mediaType: /视频|video/i.test(source.type) || /youtube\.com|youtu\.be|ted\.com/i.test(originalUrl) ? "视频" : "文章",
       sourceLanguage: containsChinese(title) || containsChinese(summaryZh) ? "zh" : "en",
       originalUrl,
       publishedAt: field(block, "pubDate") || field(block, "dc:date") || new Date().toISOString(),

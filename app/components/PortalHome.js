@@ -11,7 +11,7 @@ const sections = [
   { href: "/party", label: "党建", description: "政策文件、会议与理论学习", accent: "#bd2735", live: true },
   { href: "/horror", label: "恐怖怪谈", description: "故事、传闻与社区热帖，含内容标注", accent: "#5d466c", live: true },
   { href: "/science", label: "科普探索", description: "天文、生命、地球与论文速读", accent: "#177c71", live: true },
-  { href: "/english", label: "英语口语", description: "TED、表达训练与实用听说素材", accent: "#2874a8", live: true },
+  { href: "/english", label: "英语", description: "听、说、读、写与实用学习素材", accent: "#2874a8", live: true },
 ];
 
 export default function PortalHome() {

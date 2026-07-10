@@ -10,7 +10,7 @@ const sectionMeta = {
   party: { label: "党建", description: "汇集党建公开信息、政策文件与理论学习动态。", accent: "#bd2735" },
   horror: { label: "恐怖怪谈", description: "收录社区故事与怪谈内容，已标注可能的不适信息。", accent: "#5d466c", subcategories: ["长篇故事", "短篇故事"] },
   science: { label: "科普探索", description: "覆盖医疗健康、心理学、社会实验、数学物理与优质科普内容。", accent: "#177c71", subcategories: ["太空天文", "医疗健康", "心理学", "社会实验", "数学物理", "冷知识", "名人堂", "Kurzgesagt"] },
-  english: { label: "英语口语", description: "按听、说、读、写四项能力组织学习素材。", accent: "#2874a8", subcategories: ["听力", "口语", "阅读", "写作"] },
+  english: { label: "英语", description: "按听、说、读、写四项能力组织学习素材。", accent: "#2874a8", subcategories: ["听力", "口语", "阅读", "写作"] },
 };
 
 const formatDate = (value) => new Intl.DateTimeFormat("zh-CN", { month: "short", day: "numeric", year: "numeric" }).format(new Date(value));
@@ -73,7 +73,7 @@ export default function SectionNewsroom({ section }) {
         {(status === "empty" || (status === "ready" && !filtered.length)) && <div className="portal-loading">没有找到匹配的资讯。</div>}
         {status === "ready" && filtered.map((item) => (
           <article className="section-story" key={item.id}>
-            <div><span>{item.sourceName}</span><time>{formatDate(item.publishedAt)}</time><small>{item.subcategory || item.sourceType}</small></div>
+            <div><span>{item.sourceName}</span><time>{formatDate(item.publishedAt)}</time><small>{item.subcategory || item.sourceType}</small>{item.mediaType === "视频" && <small className="media-type">视频</small>}</div>
             <h2>{item.title}</h2>
             <p>{item.summaryZh}</p>
             {item.warning && <small className="section-warning">提示：{item.warning}</small>}

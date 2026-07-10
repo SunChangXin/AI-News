@@ -7,7 +7,7 @@ const links = [
   { href: "/party", label: "党建" },
   { href: "/horror", label: "恐怖怪谈" },
   { href: "/science", label: "科普探索" },
-  { href: "/english", label: "英语口语" },
+  { href: "/english", label: "英语" },
 ];
 
 export default function SiteNav({ current = "" }) {

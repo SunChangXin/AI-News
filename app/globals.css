@@ -222,6 +222,7 @@ footer p { margin: 0; }
 .section-story > div { display: flex; flex-wrap: wrap; gap: 14px; color: var(--muted); font: 600 10px/1.4 Consolas, monospace; letter-spacing: .06em; text-transform: uppercase; }
 .section-story > div span { color: var(--section-accent); }
 .section-story > div small { font: inherit; }
+.section-story > div .media-type { color: var(--section-accent); }
 .section-story h2 { max-width: 760px; margin: 14px 0 11px; font-size: clamp(25px, 3vw, 37px); line-height: 1.15; letter-spacing: -.045em; }
 .section-story p { max-width: 710px; margin: 0; color: var(--muted); line-height: 1.75; }
 .section-story a { display: inline-flex; align-items: center; gap: 6px; margin-top: 18px; color: var(--ink); font-size: 13px; font-weight: 750; text-decoration: none; }
